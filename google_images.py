@@ -5,11 +5,12 @@ import urllib2
 import os
 import cookielib
 import json
+import sys
 
 def get_soup(url,header):
     return BeautifulSoup(urllib2.urlopen(urllib2.Request(url,headers=header)),'html.parser')
 
-query = "bottle"
+query = sys.argv[1]
 image_type="file"
 query= query.split()
 query='+'.join(query)
