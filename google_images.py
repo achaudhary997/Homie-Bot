@@ -10,7 +10,7 @@ import sys
 def get_soup(url,header):
     return BeautifulSoup(urllib2.urlopen(urllib2.Request(url,headers=header)),'html.parser')
 
-query = sys.argv[1]
+query = ' '.join(map(str, sys.argv[1:]))
 image_type="file"
 query= query.split()
 query='+'.join(query)
