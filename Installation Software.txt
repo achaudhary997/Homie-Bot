@@ -1,0 +1,9 @@
+To install pip:
+sudo apt-get install python-pip
+
+To get selenium
+pip install -U selenium
+
+To download firefox webdriver:
+https://github.com/mozilla/geckodriver/releases
+sudo mv geckodriver /usr/bin/
