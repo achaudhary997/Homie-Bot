@@ -1,4 +1,4 @@
-def encrypt(key, msg):
+def encrypter(key, msg):
     encryped = []
     for i, c in enumerate(msg):
         key_c = ord(key[i % len(key)])
@@ -20,5 +20,3 @@ if __name__ == '__main__':
     encrypted = encrypt(key, msg)
     decrypted = decrypt(key, encrypted)
 
-    print 'Encrypted:', repr(encrypted)
-    print 'Decrypted:', repr(decrypted)
