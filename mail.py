@@ -2,6 +2,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import time
+from encrypt import decrpyt
 
 browser = webdriver.Firefox()
 browser.get('https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=https://mail.google.com/mail/&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1#identifier')
@@ -13,7 +14,7 @@ browser.find_element_by_id("next").click()
 time.sleep(1)
 
 password = browser.find_element_by_id("Passwd")
-password.send_keys("hellothere1234")
+password.send_keys(decrpyt("Homie_bot","1UZVUTKUg.! \x1d\x1a"))
 browser.find_element_by_id("signIn").click()
 
 time.sleep(4)
