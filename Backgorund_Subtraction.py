@@ -11,7 +11,7 @@ while(1):
     _, frame = cap.read()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     #Values below are HSV Values
-    lower_red = np.array([140,110,100])
+    lower_red = np.array([100,100,100])
     upper_red = np.array([220,200,255])
     
     #The lines below create the mask over the original image
