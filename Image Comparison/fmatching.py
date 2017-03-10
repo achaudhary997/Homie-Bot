@@ -63,7 +63,7 @@ def drawMatches(img1, kp1, img2, kp2, matches):
 img1 = cv2.imread('im4.jpeg',0)		
 img2 = cv2.imread('img2.jpg',0) 
 
-orb = cv2.ORB()
+orb = cv2.ORB_create()
 
 (kp1, des1) = orb.detectAndCompute(img1,None)
 (kp2, des2)= orb.detectAndCompute(img2,None)
