@@ -60,7 +60,7 @@ def drawMatches(img1, kp1, img2, kp2, matches):
 	print(min(xcoords))
 
 	return out
-img1 = cv2.imread('im4.jpeg',0)		
+img1 = cv2.imread('im3.jpeg',0)		
 img2 = cv2.imread('img2.jpg',0) 
 
 orb = cv2.ORB()
