@@ -15,8 +15,8 @@ args = vars(ap.parse_args())
 #greenLower = (30, 255, 80)
 #greenUpper = (200, 206, 110)
 # for red color
-greenLower = (40, 106, 126)
-greenUpper = (255, 220, 220)
+greenLower = (80, 116, 106)
+greenUpper = (100, 160, 120)
  
 # initialize the list of tracked points, the frame counter,
 # and the coordinate deltas
