@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 def store_raw_images():
-	neg_images_link = '//image-net.org/api/text/imagenet.synset.geturls?wnid=n00523513' # replace with your link  
+	neg_images_link = '//image-net.org/api/text/imagenet.synset.geturls?wnid=n07942152' # replace with your link  
 	neg_image_urls = urllib.request.urlopen(neg_images_link).read().decode()
 	pic_num = 1
 	
@@ -75,3 +75,4 @@ def create_pos_n_neg():
 				with open('bg.txt','a') as f:
 					f.write(line)
 
+store_raw_images()
