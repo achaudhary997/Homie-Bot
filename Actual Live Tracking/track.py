@@ -48,12 +48,12 @@ def trackObject(imgname, matchthresh):
 		key = cv2.waitKey(20)
 		if key == ESC:
 			break
-		if len(matches) > matchthresh or counter > 100: # or wait 3 seconds
-			if counter > 100:
-				return False
-			cv2.destroyAllWindows()
-			camera.release()
-			return True
+		# if len(matches) > matchthresh or counter > 100: # or wait 3 seconds
+		# 	if counter > 100:
+		# 		return False
+		# 	cv2.destroyAllWindows()
+		# 	camera.release()
+		# 	return True
 		#counter+=1
 		print len(matches)
 	cv2.destroyAllWindows()
@@ -62,4 +62,4 @@ def trackObject(imgname, matchthresh):
 	# return len(matches) > 10
 
 if __name__ == '__main__':
-	trackObject('headnew.png', 6)
+	trackObject('croppednew.png', 6)
