@@ -4,7 +4,8 @@ def trackObject(imgname, matchthresh):
 
 	ESC=27   
 	camera = cv2.VideoCapture(0)
-	orb = cv2.ORB_create()
+	orb = cv2.ORB()
+	#orb = cv2.ORB_create()
 	bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
 	imgTrainColor=cv2.imread(imgname)
@@ -48,18 +49,15 @@ def trackObject(imgname, matchthresh):
 		key = cv2.waitKey(20)
 		if key == ESC:
 			break
-		# if len(matches) > matchthresh or counter > 100: # or wait 3 seconds
-		# 	if counter > 100:
-		# 		return False
-		# 	cv2.destroyAllWindows()
-		# 	camera.release()
-		# 	return True
-		#counter+=1
+		if len(matches) > matchthresh or counter > 100: # or wait 3 seconds
+			if counter > 100:
+				return False
+			cv2.destroyAllWindows()
+			camera.release()
+			return True
+		counter+=1
 		print len(matches)
 	cv2.destroyAllWindows()
 	camera.release()
 
 	# return len(matches) > 10
-
-if __name__ == '__main__':
-	trackObject('croppednew.png', 6)
