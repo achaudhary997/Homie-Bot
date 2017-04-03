@@ -2,7 +2,7 @@ import track
 import time
 import glob
 inputString = "find my perfume"
-listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':5}
+listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6}
 flag = 0
 objectToFind = ""
 for i in listObj:
