@@ -15,7 +15,7 @@ inputString = inputString.lower()
 listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 flag = 0
 objectToFind = ""
-if "botal" in inputString:
+if "botal" in inputString or "portal" in inputString:
 	objectToFind = "bottle"
 elif "buk" in inputString:
 	objectToFind = "book"
