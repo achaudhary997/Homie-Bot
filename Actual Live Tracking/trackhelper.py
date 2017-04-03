@@ -54,7 +54,7 @@ if objectToFind != "":
 			else:
 				try:
 					os.system('espeak "' + "lol hogaya" + '"') 
-				xcept sr.UnknownValueError:
+				except sr.UnknownValueError:
 					print("[-] Error")
 				except sr.RequestError as e:
 					print "[-] Error"
