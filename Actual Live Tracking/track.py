@@ -56,7 +56,7 @@ def trackObject(imgname, matchthresh):
 			camera.release()
 			return True
 		counter+=1
-		print len(matches)
+		#print len(matches)
 	cv2.destroyAllWindows()
 	camera.release()
 

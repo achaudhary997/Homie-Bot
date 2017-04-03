@@ -1,8 +1,18 @@
 import track
 import time
 import glob
-inputString = "find my perfume"
-listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6}
+import speech_recognition as sr 
+import os
+
+r=sr.Recognizer()
+
+with sr.Microphone() as source:
+	print("say something")
+	audio=r.listen(source)
+
+
+inputString = r.recognize_google(audio)
+listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 flag = 0
 objectToFind = ""
 for i in listObj:
@@ -23,10 +33,21 @@ if objectToFind != "":
 			ret = track.trackObject(i,objectThreshold)
 			if ret == True:
 				print "Found " + objectToFind
+				try:
+					os.system('espeak "' + "found " + objectToFind + '"') 
+				except sr.UnknownValueError:
+					print("error")
+				except sr.RequestError as e:
+					print"error"
 				flag = 1
 				break
 			else:
-				print "Bhadwe"
+				try:
+					os.system('espeak "' + "lol hogaya" + '"') 
+				except sr.UnknownValueError:
+					print("error")
+				except sr.RequestError as e:
+					print"error"
 		if(flag == 1):
 			break
 
