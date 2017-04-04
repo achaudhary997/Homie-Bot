@@ -1,3 +1,8 @@
+import time
+import glob
+import speech_recognition as sr 
+import os
+
 def trackObject(imgname, matchthresh):
 	import numpy as np
 	import cv2
@@ -17,7 +22,6 @@ def trackObject(imgname, matchthresh):
 	firsttime=True
 	counter = 0
 	while True:
-	
 		ret, imgCamColor = camera.read()
 		imgCamGray = cv2.cvtColor(imgCamColor, cv2.COLOR_BGR2GRAY)
 		kpCam = orb.detect(imgCamGray,None)
@@ -60,4 +64,69 @@ def trackObject(imgname, matchthresh):
 	cv2.destroyAllWindows()
 	camera.release()
 
-	# return len(matches) > 10
+r=sr.Recognizer()
+
+with sr.Microphone() as source:
+	r.adjust_for_ambient_noise(source)
+	os.system("./speech.sh What do you want to find?")
+	audio=r.listen(source)
+
+
+inputString = r.recognize_google(audio)
+inputString = inputString.lower()
+print inputString
+listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
+flag = 0
+objectToFind = ""
+if "botal" in inputString or "portal" in inputString:
+	objectToFind = "bottle"
+elif "buk" in inputString:
+	objectToFind = "book"
+elif "cute" in inputString:
+	objectToFind = "cube"
+elif "mum" in inputString or "cup" in inputString or "class" in inputString:
+	objectToFind = "mug" 
+elif "deodorant" in inputString:
+	objectToFind = "perfume"
+elif "house" in inputString or "maus" in inputString:
+	objectToFind = "mouse"
+else:
+	for i in listObj:
+		if i in inputString:
+			objectToFind = i
+			objectThreshold = listObj[i]
+			break
+if objectToFind != "":
+	img_files=glob.glob(objectToFind+'/*')
+	flag = 0
+	count = 0
+	while True: 
+		for i in img_files:
+			print "[+] Trying image " + i
+			ret = trackObject(i,objectThreshold)
+			if ret == True:
+				print "Found " + objectToFind
+				try:
+					os.system('./speech.sh ' + "found " + objectToFind) 
+				except sr.UnknownValueError:
+					print("[-] Error")
+				except sr.RequestError as e:
+					print "[-] Error"
+				flag = 1
+				break
+			else:	
+				try:
+					os.system('./speech.sh ' + "lol hogaya") 
+				except sr.UnknownValueError:
+					print("[-] Error")
+				except sr.RequestError as e:
+					print "[-] Error"	
+		if(flag == 1):
+			break
+else:
+	try:
+		os.system('./speech.sh ' + "Object not in Database") 
+	except sr.UnknownValueError:
+		print("[-] Error")
+	except sr.RequestError as e:
+		print "[-] Error"

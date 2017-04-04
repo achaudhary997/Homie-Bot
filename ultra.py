@@ -29,5 +29,5 @@ distance = pulse_duration * 17150
 
 ditance = round(distance, 2)
 
-print "Distance:", distance, "cm"
+print "Distance:", distance, "cm" # The final distance
 GPIO.cleanup()
