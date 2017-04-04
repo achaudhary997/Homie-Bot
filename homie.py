@@ -27,7 +27,7 @@ def input_speech():
 
 def weather():
 	owm = pyowm.OWM('8e47cb932d1448c4049c3506aca77f87')
-	os.system("./speech.sh" + "Which place?")
+	os.system("./speech.sh " + "Which place?")
 	place = input_speech()
 	observation = owm.weather_at_place(place)
 	w = observation.get_weather()
