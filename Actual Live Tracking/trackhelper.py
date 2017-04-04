@@ -7,7 +7,7 @@ import os
 r=sr.Recognizer()
 
 with sr.Microphone() as source:
-	print("say something")
+	os.system("./speech.sh Say Something")
 	audio=r.listen(source)
 
 inputString = r.recognize_google(audio)
@@ -15,7 +15,7 @@ inputString = inputString.lower()
 listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 flag = 0
 objectToFind = ""
-if "botal" in inputString or "portal" in inputString:
+if "botal" in inputString or "portal" in inputStrings:
 	objectToFind = "bottle"
 elif "buk" in inputString:
 	objectToFind = "book"
@@ -44,7 +44,7 @@ if objectToFind != "":
 			if ret == True:
 				print "Found " + objectToFind
 				try:
-					os.system('espeak "' + "found " + objectToFind + '"') 
+					os.system('./speech.sh ' + "found " + objectToFind) 
 				except sr.UnknownValueError:
 					print("[-] Error")
 				except sr.RequestError as e:
@@ -53,7 +53,7 @@ if objectToFind != "":
 				break
 			else:
 				try:
-					os.system('espeak "' + "lol hogaya" + '"') 
+					os.system('./speech.sh ' + "lol hogaya") 
 				except sr.UnknownValueError:
 					print("[-] Error")
 				except sr.RequestError as e:
@@ -63,7 +63,7 @@ if objectToFind != "":
 
 else:
 	try:
-		os.system('espeak "' + "Object not in Database" + '"') 
+		os.system('./speech.sh ' + "Object not in Database") 
 	except sr.UnknownValueError:
 		print("[-] Error")
 	except sr.RequestError as e:
