@@ -7,27 +7,28 @@ import time
 from datetime import datetime
 r=sr.Recognizer()
 
+
+def input_speech():
+	while True:
+		print "trying to listen"
+		with sr.Microphone() as source:
+			audio=r.listen(source)
+			print "sup"
+
+		try:
+			text=r.recognize_google(audio)
+			print text
+			break
+		except:
+			os.system('./speech.sh ' + "could you please repeat that? I did not quite understand you.")
+
+	#text = r.recognize_google(audio)
+	return text
+
 def weather():
 	owm = pyowm.OWM('8e47cb932d1448c4049c3506aca77f87')
-	while True:
-		with sr.Microphone() as source:
-			print("say something")
-			audio=r.listen(source)
-
-			
-		try:
-			os.system('./speech.sh ' + "Finding the temperature in " + r.recognize_google(audio)) 
-			break
-		except sr.UnknownValueError:
-			os.system('./speech.sh ' + "Could you please repeat that")
-			print("error")
-
-
-		except sr.RequestError as e:
-			print"error"
-			os.system('./speech.sh ' + "Could you please repeat that")
-
-	place = r.recognize_google(audio)
+	os.system("./speech.sh" + "Which place?")
+	place = input_speech()
 	observation = owm.weather_at_place(place)
 	w = observation.get_weather()
 	complete_temp = w.get_temperature('celsius') 
@@ -43,7 +44,6 @@ def news_for_today():
 		                      /a/span[@class="titletext"]/text()')
 		for i in news:
 			os.system('./speech.sh ' + i)
-		#print("\n \n".join(news))
 
 
 
@@ -54,11 +54,28 @@ def current_time():
 	d=d.strftime("%I:%M %p")
 	os.system('./speech.sh ' + d)
 
-def reminder():
-	
+def determine(ans):
+	option1a="news"
+	option1b="News"
+	option2a="Weather"
+	option2b="weather"
+	option3a="time"
+	option3b="Time"
+	if option1a in ans or option1b in ans:
+		news_for_today()
+	elif option2a in ans or option2b in ans:
+		weather()
+	elif option3a in ans or option3b in ans:
+		current_time()
 
 #news_for_today()
 #current_time()
 
+if __name__ == "__main__":
+	os.system("./speech.sh " + "Hey there! Whats up? ")
+	print "hello"
+	ans = input_speech()
+	print ans
+	determine(ans)
 
 
