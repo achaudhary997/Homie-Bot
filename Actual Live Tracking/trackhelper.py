@@ -12,6 +12,7 @@ with sr.Microphone() as source:
 
 inputString = r.recognize_google(audio)
 inputString = inputString.lower()
+print inputString
 listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 flag = 0
 objectToFind = ""
