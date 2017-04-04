@@ -15,22 +15,22 @@ flag = 0
 r = sr.Recognizer()
 while True:
 	with sr.Microphone() as source:
-		engine = pyttsx.init()
+	        #engine = pyttsx.init()
 		if flag==0:
-			engine.say('What do you want to find?')
+			print('What do you want to find?')
 		elif flag==1:
-			engine.say('Sorry, could you please repeat')
-		engine.runAndWait()
+			print('Sorry, could you please repeat')
+		#engine.runAndWait()
 		audio = r.listen(source)
 	#query = ' '.join(map(str, sys.argv[1:]))
 	flag = 1
 	try:
 		query = r.recognize_google(audio)
-		engine = pyttsx.init()
-		engine.say("Finding")
-		engine.say(query)
-		engine.say("for you.")
-		engine.runAndWait()
+		#engine = pyttsx.init()
+		#engine.say("Finding")
+		#engine.say(query)
+		#engine.say("for you.")
+		#engine.runAndWait()
 		break
 	except sr.UnknownValueError:
 		print("Google Speech Recognition could not understand audio")
@@ -38,6 +38,7 @@ while True:
 		print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 query = r.recognize_google(audio)
+print (query)
 image_type="file"
 #query= query.split()
 #query='+'.join(query)

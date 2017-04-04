@@ -5,16 +5,27 @@ from lxml import html
 import requests
 import time
 from datetime import datetime
-r=sr.Recognizer()
 
+#settings
+mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
+sample_rate = 48000
+chunk_size = 2048
+
+r=sr.Recognizer()
+r.energy_threshold = 50
+mic_list = sr.Microphone.list_microphone_names()
+
+for i,microphone_name in enumerate(mic_list):
+	if microphone_name == mic_name:
+		device_id=i
 
 def input_speech():
 	while True:
 		print "trying to listen"
-		with sr.Microphone() as source:
+		with sr.Microphone(device_index=device_id, sample_rate = sample_rate, chunk_size=chunk_size) as source:
+			print "okay say something"
 			audio=r.listen(source)
 			print "sup"
-
 		try:
 			text=r.recognize_google(audio)
 			print text
