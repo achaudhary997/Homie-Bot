@@ -7,13 +7,13 @@ def findDistance():
 
 	TRIG = 23
 	ECHO = 24
-	print "[+] Distance Measurement in Progress"
+	print ("[+] Distance Measurement in Progress")
 
 	GPIO.setup(TRIG, GPIO.OUT)
 	GPIO.setup(ECHO, GPIO.IN)
 
 	GPIO.output(TRIG, False)
-	print "[+] Waiting for sensor to settle"
+	print ("[+] Waiting for sensor to settle")
 	time.sleep(2)
 
 	GPIO.output(TRIG, True)
@@ -21,10 +21,10 @@ def findDistance():
 	GPIO.output(TRIG, False)
 
 	while GPIO.input(ECHO)==0:
-	pulse_start = time.time()
+		pulse_start = time.time()
 
 	while GPIO.input(ECHO)==1:
-	pulse_end = time.time()
+		pulse_end = time.time()
 
 	pulse_duration = pulse_end - pulse_start
 
@@ -32,7 +32,7 @@ def findDistance():
 
 	ditance = round(distance, 2)
 
-	print "Distance:", distance, "cm" # The final distance
+	print ("Distance:", distance, "cm") # The final distance
 	GPIO.cleanup()
 	return distance
 
@@ -61,7 +61,7 @@ try:
 			GPIO.output(11,False)
 			GPIO.output(13,False)
 			GPIO.output(15,False)
-		elif curDistance > 30:
+		elif curDistance > 20:
 			if char == curses.KEY_RIGHT:
 				GPIO.output(7,False)
 				GPIO.output(11,True)
