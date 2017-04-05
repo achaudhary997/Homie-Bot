@@ -188,19 +188,16 @@ def realvoiceinput(inputString):
 
 def determine(ans):
 	option1a="news"
-	#option1b="News"
-	#option2a="Weather"
 	option2a="weather"
 	option3a="time"
 	option4a ="find"
 	option4v="where"
-
-	#option3b="Time"
-	if option1a in ans or option1b in ans:
+	
+	if option1a in ans:
 		news_for_today()
-	elif option2a in ans or option2b in ans:
+	elif option2a in ans:
 		weather()
-	elif option3a in ans or option3b in ans:
+	elif option3a in ans:
 		current_time()
 	elif option4a in ans or option4v in ans:
 		realvoiceinput(ans)
