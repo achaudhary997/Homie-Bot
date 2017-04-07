@@ -106,7 +106,10 @@ def trackObject(imgname, matchthresh):
 		kpCam, desCam = orb.compute(imgCamGray, kpCam)
 		matches = bf.match(desCam,desTrain)
 		dist = [m.distance for m in matches]
-		thres_dist = (sum(dist) / len(dist)) * 0.5
+		try:
+			thres_dist = (sum(dist) / len(dist)) * 0.5
+		except:
+			thres_dist = (sum(dist) *0.5)
 		matches = [m for m in matches if m.distance < thres_dist]   
 
 		if firsttime==True:
@@ -192,11 +195,11 @@ def voiceInput(inputString):
 					if count < 5:
 						for i in range(0,rotate_distance):
 							move_left()
-							voiceInput(objectToFind)
+							#voiceInput(objectToFind)
 					elif count > 7 and findDistance > 10:
 						for i in range(0,move_forward_distance):
 							move_up()
-							voiceInput(objectToFind)
+							#voiceInput(objectToFind)
 					try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:
