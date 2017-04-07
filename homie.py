@@ -193,9 +193,9 @@ def voiceInput(inputString):
 						if matches >= 2:
 							count += 1
 					if count < 5:
-						move_left(rotate_time)
+						move_left()
 						print 'moving left'
-						time.sleep(0.2)
+						time.sleep(rotate_time)
 						dont_move()
 							#voiceInput(objectToFind)
 					elif count > 7 and findDistance > 10:
