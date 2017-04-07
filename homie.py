@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 import glob
 import random
+import RPi.GPIO as GPIO
 
 # how much to rotate
 rotate_distance = 2
@@ -272,24 +273,44 @@ def findDistance():
 	return distance
 
 def move_left():
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(7,GPIO.OUT)	
+	GPIO.setup(11,GPIO.OUT)
+	GPIO.setup(13,GPIO.OUT)
+	GPIO.setup(15,GPIO.OUT)
 	GPIO.output(7,True)
 	GPIO.output(11,False)
 	GPIO.output(13,True)
 	GPIO.output(15,False)
 
 def move_right():
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(7,GPIO.OUT)	
+	GPIO.setup(11,GPIO.OUT)
+	GPIO.setup(13,GPIO.OUT)
+	GPIO.setup(15,GPIO.OUT)						
 	GPIO.output(7,False)
 	GPIO.output(11,True)
 	GPIO.output(13,False)
 	GPIO.output(15,True)
 
 def move_up():
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(7,GPIO.OUT)	
+	GPIO.setup(11,GPIO.OUT)
+	GPIO.setup(13,GPIO.OUT)
+	GPIO.setup(15,GPIO.OUT)
 	GPIO.output(7,True)
 	GPIO.output(11,False)
 	GPIO.output(13,False)
 	GPIO.output(15,True)
 
 def move_down():
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(7,GPIO.OUT)	
+	GPIO.setup(11,GPIO.OUT)
+	GPIO.setup(13,GPIO.OUT)
+	GPIO.setup(15,GPIO.OUT)
 	GPIO.output(7,False)
 	GPIO.output(11,True)
 	GPIO.output(13,True)
