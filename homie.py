@@ -9,10 +9,10 @@ import glob
 import random
 import RPi.GPIO as GPIO
 
-# how much to rotate
-rotate_time = 0.2
-min_move_front_distance = 10
-move_forward_time = 0.8
+# times for various movements
+rotate_time = 0.1
+move_backward_time = 0.5
+move_forward_time = 0.5
 
 #settings
 mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
@@ -178,6 +178,9 @@ def voiceInput(inputString):
 				ret, b = trackObject(i,objectThreshold)
 				if ret == True:
 					print "Found " + objectToFind
+					move_down()
+					time.sleep(move_backward_time)
+					dont_move()
 					try:
 						os.system('./speech.sh ' + "found " + objectToFind) 
 					except sr.UnknownValueError:
