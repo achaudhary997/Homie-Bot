@@ -139,7 +139,7 @@ def trackObject(imgname, matchthresh):
 				return False, listOfMatches
 			cv2.destroyAllWindows()
 			camera.release()
-			return True
+			return True, listOfMatches
 		counter+=1
 		listOfMatches.append(len(matches))
 		#print len(matches)
