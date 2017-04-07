@@ -22,6 +22,7 @@ for i,microphone_name in enumerate(mic_list):
 		device_id=i
 		print microphone_name
 		print device_id
+
 def input_speech():
 	while True:
 		print "trying to listen"
@@ -29,7 +30,7 @@ def input_speech():
 			r.adjust_for_ambient_noise(source)
 			print "okay say something"
 			audio=r.listen(source)
-			print "sup"
+			# print "sup"
 		try:
 			text=r.recognize_google(audio)
 			print text
@@ -69,6 +70,10 @@ def current_time():
 	d=d.strftime("%I:%M %p")
 	os.system('./speech.sh ' + d)
 
+def joke():
+	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call", "Yo mama so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
+	i=random.randrange(0,len(L))
+	os.system('./speech.sh ' + L[i])
 
 def trackObject(imgname, matchthresh):
 	import numpy as np
@@ -131,11 +136,7 @@ def trackObject(imgname, matchthresh):
 	cv2.destroyAllWindows()
 	camera.release()
 
-def joke():
-	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call", "Yo mama so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
-	i=random.randrange(0,len(L))
-	os.system('./speech.sh ' + L[i])
-def realvoiceinput(inputString):	
+def voiceInput(inputString):	
 	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 	flag = 0
 	objectToFind = ""
@@ -175,7 +176,7 @@ def realvoiceinput(inputString):
 						print "[-] Error"
 					flag = 1
 					break
-				else:	
+				else:
 					try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:
@@ -193,23 +194,125 @@ def realvoiceinput(inputString):
 			print "[-] Error"
 
 def determine(ans):
-	option1a="news"
-	option2a="weather"
-	option3a="time"
-	option4a ="find"
-	option4v="where"
-	option5="joke"
+	option1="news"
+	option2="weather"
+	option3="time"
+	option4 ="find"
+	option5="where"
+	option6="joke"
+	option7="move"
 	
-	if option1a in ans:
+	if option1 in ans:
 		news_for_today()
-	elif option2a in ans:
+	elif option2 in ans:
 		weather()
-	elif option3a in ans:
+	elif option3 in ans:
 		current_time()
-	elif option4a in ans or option4v in ans:
-		realvoiceinput(ans)
-	elif option5 in ans:
-		joke()
+	elif option4 in ans or option5 in ans:
+		voiceInput(ans)
+	elif option6 in ans:
+		jokes()
+	elif option6 in ans:
+		move()
+
+def findDistance():
+	import time
+	import curses
+	import RPi.GPIO as GPIO
+	GPIO.setmode(GPIO.BOARD)
+
+	TRIG = 16
+	ECHO = 18
+	print ("[+] Distance Measurement in Progress")
+
+	GPIO.setup(TRIG, GPIO.OUT)
+	GPIO.setup(ECHO, GPIO.IN)
+
+	GPIO.output(TRIG, False)
+	print ("[+] Waiting for sensor to settle")
+	time.sleep(0.5)
+
+	GPIO.output(TRIG, True)
+	time.sleep(0.00001)
+	GPIO.output(TRIG, False)
+
+	while GPIO.input(ECHO)==0:
+		pulse_start = time.time()
+
+	while GPIO.input(ECHO)==1:
+		pulse_end = time.time()
+
+	pulse_duration = pulse_end - pulse_start
+
+	distance = pulse_duration * 17150
+
+	ditance = round(distance, 2)
+
+	print ("Distance:", distance, "cm") # The final distance
+	GPIO.cleanup()
+	return distance
+
+def move():
+	# Get the curses window, turn off echoing of keyboard to screen, turn on
+	# instant (no waiting) key response, and use special values for cursor keys
+	screen = curses.initscr()
+	curses.noecho() 
+	curses.cbreak()
+	screen.keypad(True)
+
+	try:
+		while True:   
+			curDistance = findDistance()
+			print curDistance
+			char = screen.getch()
+			GPIO.setmode(GPIO.BOARD)
+			GPIO.setup(7,GPIO.OUT)	
+			GPIO.setup(11,GPIO.OUT)
+			GPIO.setup(13,GPIO.OUT)
+			GPIO.setup(15,GPIO.OUT)
+
+			if char == ord('q'):
+				break
+			elif char == ord('s'):
+				GPIO.output(7,False)
+				GPIO.output(11,False)
+				GPIO.output(13,False)
+				GPIO.output(15,False)
+			elif curDistance > 20:
+				if char == curses.KEY_RIGHT:
+					GPIO.output(7,False)
+					GPIO.output(11,True)
+					GPIO.output(13,False)
+					GPIO.output(15,True)
+				elif char == curses.KEY_LEFT:
+					GPIO.output(7,True)
+					GPIO.output(11,False)
+					GPIO.output(13,True)
+					GPIO.output(15,False)
+				elif char == curses.KEY_UP:
+					GPIO.output(7,True)
+					GPIO.output(11,False)
+					GPIO.output(13,False)
+					GPIO.output(15,True)
+				elif char == curses.KEY_DOWN:
+					GPIO.output(7,False)
+					GPIO.output(11,True)
+					GPIO.output(13,True)
+					GPIO.output(15,False)
+			else:
+				GPIO.output(7,False)
+				GPIO.output(11,False)
+				GPIO.output(13,False)
+				GPIO.output(15,False)
+				
+			 
+	finally:
+		#Close down curses properly, inc turn echo back on!
+		curses.nocbreak(); screen.keypad(0); curses.echo()
+		curses.endwin()
+		GPIO.cleanup()
+
+
 #news_for_today()
 #current_time()
 
