@@ -10,9 +10,9 @@ import random
 import RPi.GPIO as GPIO
 
 # how much to rotate
-rotate_distance = 2
+rotate_time = 0.2
 min_move_front_distance = 10
-move_forward_distance = 2
+move_forward_time = 0.8
 
 #settings
 mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
@@ -193,15 +193,16 @@ def voiceInput(inputString):
 						if matches >= 2:
 							count += 1
 					if count < 5:
-						for i in range(0,rotate_distance):
-							move_left()
+						move_left(rotate_time)
+						print 'moving left'
+						time.sleep(0.2)
+						dont_move()
 							#voiceInput(objectToFind)
-					dont_move()
 					elif count > 7 and findDistance > 10:
-						for i in range(0,move_forward_distance):
-							move_up()
-							#voiceInput(objectToFind)
-					dont_move()
+						move_up()
+						time.sleep(move_forward_time)
+						dont_move()
+						#voiceInput(objectToFind)
 					try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:
