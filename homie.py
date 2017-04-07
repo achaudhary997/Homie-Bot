@@ -69,9 +69,6 @@ def current_time():
 	d=d.strftime("%I:%M %p")
 	os.system('./speech.sh ' + d)
 
-def jokes():
-	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing.","Yo momma is so fat that when she went to the beach a whale swam up and sang, We are family, even though you're fatter than me"
-
 
 def trackObject(imgname, matchthresh):
 	import numpy as np
@@ -134,6 +131,10 @@ def trackObject(imgname, matchthresh):
 	cv2.destroyAllWindows()
 	camera.release()
 
+def joke():
+	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call", "Yo mama so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
+	i=random.randrange(0,len(L))
+	os.system('./speech.sh ' + L[i])
 def realvoiceinput(inputString):	
 	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 	flag = 0
@@ -208,8 +209,7 @@ def determine(ans):
 	elif option4a in ans or option4v in ans:
 		realvoiceinput(ans)
 	elif option5 in ans:
-		jokes()
-
+		joke()
 #news_for_today()
 #current_time()
 
