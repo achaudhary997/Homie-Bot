@@ -74,8 +74,8 @@ def trackObject(imgname, matchthresh):
 
 	ESC=27   
 	camera = cv2.VideoCapture(0)
-	orb = cv2.ORB()
-	#orb = cv2.ORB_create()
+	#orb = cv2.ORB()
+	orb = cv2.ORB_create()
 	bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
 	imgTrainColor=cv2.imread(imgname)
@@ -113,7 +113,7 @@ def trackObject(imgname, matchthresh):
 			pt_b=(int(kpCam[matches[i].queryIdx].pt[0]+w2), int(kpCam[matches[i].queryIdx].pt[1]))
 			cv2.line(result, pt_a, pt_b, (255, 0, 0))
 
-		cv2.imshow('Camara', result)
+		#cv2.imshow('Camara', result)
 		
 		key = cv2.waitKey(20)
 		if key == ESC:
@@ -125,12 +125,12 @@ def trackObject(imgname, matchthresh):
 			camera.release()
 			return True
 		counter+=1
-		#print len(matches)
+		print len(matches)
 	cv2.destroyAllWindows()
 	camera.release()
 
 def realvoiceinput(inputString):	
-	listObj = {'bottle':11, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
+	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
@@ -152,7 +152,7 @@ def realvoiceinput(inputString):
 				objectThreshold = listObj[i]
 				break
 	if objectToFind != "":
-		img_files=glob.glob(objectToFind+'database/*')
+		img_files=glob.glob('./database/'+objectToFind+'/*')
 		flag = 0
 		count = 0
 		while True: 
