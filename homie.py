@@ -8,6 +8,11 @@ from datetime import datetime
 import glob
 import random
 
+# how much to rotate
+rotate_distance = 2
+min_move_front_distance = 10
+move_forward_distance = 2
+
 #settings
 mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
 sample_rate = 48000
@@ -78,7 +83,7 @@ def joke():
 def trackObject(imgname, matchthresh):
 	import numpy as np
 	import cv2
-
+	listOfMatches = []
 	ESC=27   
 	camera = cv2.VideoCapture(0)
 	#orb = cv2.ORB()
@@ -127,12 +132,13 @@ def trackObject(imgname, matchthresh):
 			break
 		if len(matches) > matchthresh or counter > 100: # or wait 3 seconds
 			if counter > 100:
-				return False
+				return False, listOfMatches
 			cv2.destroyAllWindows()
 			camera.release()
 			return True
 		counter+=1
-		print len(matches)
+		listOfMatches.append(len(matches))
+		#print len(matches)
 	cv2.destroyAllWindows()
 	camera.release()
 
@@ -165,7 +171,7 @@ def voiceInput(inputString):
 		while True: 
 			for i in img_files:
 				print "[+] Trying image " + i
-				ret = trackObject(i,objectThreshold)
+				ret, b = trackObject(i,objectThreshold)
 				if ret == True:
 					print "Found " + objectToFind
 					try:
@@ -175,8 +181,21 @@ def voiceInput(inputString):
 					except sr.RequestError as e:
 						print "[-] Error"
 					flag = 1
+					if flag == 1:
+						exit(0)
 					break
 				else:
+					for matches in b:
+						if matches >= 2:
+							count += 1
+					if count < 5:
+						for i in range(0,rotate_distance):
+							move_left()
+							voiceInput(objectToFind)
+					elif count > 7 and count < 18 and findDistance > 10:
+						for i in range(0,move_forward_distance):
+							move_up()
+							voiceInput(objectToFind)
 					try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:
@@ -276,50 +295,6 @@ def move_down():
 	GPIO.output(13,True)
 	GPIO.output(15,False)
 
-def move():
-	# Get the curses window, turn off echoing of keyboard to screen, turn on
-	# instant (no waiting) key response, and use special values for cursor keys
-	screen = curses.initscr()
-	curses.noecho() 
-	curses.cbreak()
-	screen.keypad(True)
-
-	try:
-		while True:   
-			curDistance = findDistance()
-			print curDistance
-			char = screen.getch()
-			GPIO.setmode(GPIO.BOARD)
-			GPIO.setup(7,GPIO.OUT)	
-			GPIO.setup(11,GPIO.OUT)
-			GPIO.setup(13,GPIO.OUT)
-			GPIO.setup(15,GPIO.OUT)
-
-			if char == ord('q'):
-				break
-			elif char == ord('s'):
-				GPIO.output(7,False)
-				GPIO.output(11,False)
-				GPIO.output(13,False)
-				GPIO.output(15,False)
-			elif curDistance > 20:
-				
-			else:
-				GPIO.output(7,False)
-				GPIO.output(11,False)
-				GPIO.output(13,False)
-				GPIO.output(15,False)
-				
-			 
-	finally:
-		#Close down curses properly, inc turn echo back on!
-		curses.nocbreak(); screen.keypad(0); curses.echo()
-		curses.endwin()
-		GPIO.cleanup()
-
-
-#news_for_today()
-#current_time()
 
 if __name__ == "__main__":
 	os.system("./speech.sh " + "Hey there! Whats up? ")
