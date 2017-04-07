@@ -3,10 +3,11 @@ import curses
 import RPi.GPIO as GPIO
 
 def findDistance():
-	GPIO.setmode(GPIO.BCM)
+	
+	GPIO.setmode(GPIO.BOARD)
 
-	TRIG = 23
-	ECHO = 24
+	TRIG = 16
+	ECHO = 18
 	print ("[+] Distance Measurement in Progress")
 
 	GPIO.setup(TRIG, GPIO.OUT)
@@ -14,7 +15,7 @@ def findDistance():
 
 	GPIO.output(TRIG, False)
 	print ("[+] Waiting for sensor to settle")
-	time.sleep(2)
+	time.sleep(0.5)
 
 	GPIO.output(TRIG, True)
 	time.sleep(0.00001)
@@ -36,12 +37,6 @@ def findDistance():
 	GPIO.cleanup()
 	return distance
 
-#set GPIO numbering mode and define output pins
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(7,GPIO.OUT)
-GPIO.setup(11,GPIO.OUT)
-GPIO.setup(13,GPIO.OUT)
-GPIO.setup(15,GPIO.OUT)
 
 # Get the curses window, turn off echoing of keyboard to screen, turn on
 # instant (no waiting) key response, and use special values for cursor keys
@@ -53,7 +48,14 @@ screen.keypad(True)
 try:
 	while True:   
 		curDistance = findDistance()
+		print curDistance
 		char = screen.getch()
+		GPIO.setmode(GPIO.BOARD)
+		GPIO.setup(7,GPIO.OUT)	
+		GPIO.setup(11,GPIO.OUT)
+		GPIO.setup(13,GPIO.OUT)
+		GPIO.setup(15,GPIO.OUT)
+
 		if char == ord('q'):
 			break
 		elif char == ord('s'):
@@ -84,9 +86,9 @@ try:
 				GPIO.output(15,False)
 		else:
 			GPIO.output(7,False)
-			GPIO.output(11,True)
+			GPIO.output(11,False)
 			GPIO.output(13,False)
-			GPIO.output(15,True)
+			GPIO.output(15,False)
 			
 		 
 finally:
