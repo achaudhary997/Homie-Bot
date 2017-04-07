@@ -6,6 +6,7 @@ import requests
 import time
 from datetime import datetime
 import glob
+import random
 
 #settings
 mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
@@ -67,6 +68,10 @@ def current_time():
 	d=datetime.strptime(d, "%H:%M")
 	d=d.strftime("%I:%M %p")
 	os.system('./speech.sh ' + d)
+
+def jokes():
+	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing.","Yo momma is so fat that when she went to the beach a whale swam up and sang, We are family, even though you're fatter than me"
+
 
 def trackObject(imgname, matchthresh):
 	import numpy as np
@@ -192,6 +197,7 @@ def determine(ans):
 	option3a="time"
 	option4a ="find"
 	option4v="where"
+	option5="joke"
 	
 	if option1a in ans:
 		news_for_today()
@@ -201,6 +207,8 @@ def determine(ans):
 		current_time()
 	elif option4a in ans or option4v in ans:
 		realvoiceinput(ans)
+	elif option5 in ans:
+		jokes()
 
 #news_for_today()
 #current_time()
