@@ -192,7 +192,7 @@ def voiceInput(inputString):
 						for i in range(0,rotate_distance):
 							move_left()
 							voiceInput(objectToFind)
-					elif count > 7 and count < 18 and findDistance > 10:
+					elif count > 7 and findDistance > 10:
 						for i in range(0,move_forward_distance):
 							move_up()
 							voiceInput(objectToFind)
