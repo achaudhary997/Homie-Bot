@@ -9,10 +9,25 @@ import glob
 import random
 import RPi.GPIO as GPIO
 
+def cleanup():
+	GPIO.cleanup()
+
+def dont_move():
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(7,GPIO.OUT)
+        GPIO.setup(11,GPIO.OUT)
+        GPIO.setup(13,GPIO.OUT)
+        GPIO.setup(15,GPIO.OUT)
+        GPIO.output(7,False)
+        GPIO.output(11,False)
+        GPIO.output(13,False)
+        GPIO.output(15,False)
+
 # how much to rotate
-rotate_time = 0.2
+dont_move()
+rotate_time = 0.5
 min_move_front_distance = 10
-move_forward_time = 0.8
+move_forward_time = 0.33
 
 #settings
 mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
@@ -134,8 +149,8 @@ def trackObject(imgname, matchthresh):
 		key = cv2.waitKey(20)
 		if key == ESC:
 			break
-		if len(matches) > matchthresh or counter > 100: # or wait 3 seconds
-			if counter > 100:
+		if len(matches) > matchthresh or counter > 60: # or wait 3 seconds
+			if counter > 60:
 				return False, listOfMatches
 			cv2.destroyAllWindows()
 			camera.release()
@@ -185,6 +200,7 @@ def voiceInput(inputString):
 					except sr.RequestError as e:
 						print "[-] Error"
 					flag = 1
+					cleanup()
 					if flag == 1:
 						exit(0)
 					break
@@ -192,14 +208,16 @@ def voiceInput(inputString):
 					for matches in b:
 						if matches >= 2:
 							count += 1
-					if count < 5:
+					print 'count is '+str(count)
+					if count < 14:
 						move_left()
 						print 'moving left'
 						time.sleep(rotate_time)
 						dont_move()
 							#voiceInput(objectToFind)
-					elif count > 7 and findDistance > 10:
+					elif count > 14 and findDistance > 14:
 						move_up()
+						print 'moving forward'
 						time.sleep(move_forward_time)
 						dont_move()
 						#voiceInput(objectToFind)
@@ -210,8 +228,10 @@ def voiceInput(inputString):
 					except sr.RequestError as e:
 						print "[-] Error"	
 			if(flag == 1):
+				cleanup()
 				break
 	else:
+		cleanup()
 		try:
 			os.system('./speech.sh ' + "Object not in Database") 
 		except sr.UnknownValueError:
