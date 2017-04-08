@@ -252,6 +252,30 @@ def findDistance():
 	GPIO.cleanup()
 	return distance
 
+def move_left():
+	GPIO.output(7,True)
+	GPIO.output(11,False)
+	GPIO.output(13,True)
+	GPIO.output(15,False)
+
+def move_right():
+	GPIO.output(7,False)
+	GPIO.output(11,True)
+	GPIO.output(13,False)
+	GPIO.output(15,True)
+
+def move_up():
+	GPIO.output(7,True)
+	GPIO.output(11,False)
+	GPIO.output(13,False)
+	GPIO.output(15,True)
+
+def move_down():
+	GPIO.output(7,False)
+	GPIO.output(11,True)
+	GPIO.output(13,True)
+	GPIO.output(15,False)
+
 def move():
 	# Get the curses window, turn off echoing of keyboard to screen, turn on
 	# instant (no waiting) key response, and use special values for cursor keys
@@ -279,26 +303,7 @@ def move():
 				GPIO.output(13,False)
 				GPIO.output(15,False)
 			elif curDistance > 20:
-				if char == curses.KEY_RIGHT:
-					GPIO.output(7,False)
-					GPIO.output(11,True)
-					GPIO.output(13,False)
-					GPIO.output(15,True)
-				elif char == curses.KEY_LEFT:
-					GPIO.output(7,True)
-					GPIO.output(11,False)
-					GPIO.output(13,True)
-					GPIO.output(15,False)
-				elif char == curses.KEY_UP:
-					GPIO.output(7,True)
-					GPIO.output(11,False)
-					GPIO.output(13,False)
-					GPIO.output(15,True)
-				elif char == curses.KEY_DOWN:
-					GPIO.output(7,False)
-					GPIO.output(11,True)
-					GPIO.output(13,True)
-					GPIO.output(15,False)
+				
 			else:
 				GPIO.output(7,False)
 				GPIO.output(11,False)

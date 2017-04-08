@@ -38,6 +38,8 @@ def findDistance():
 	return distance
 
 
+
+
 # Get the curses window, turn off echoing of keyboard to screen, turn on
 # instant (no waiting) key response, and use special values for cursor keys
 screen = curses.initscr()
