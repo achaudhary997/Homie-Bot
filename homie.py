@@ -173,7 +173,7 @@ def trackObject(imgname, matchthresh):
 	camera.release()
 
 def voiceInput(inputString):	
-	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7}
+	listObj = {'bottle':9, 'book':10, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
