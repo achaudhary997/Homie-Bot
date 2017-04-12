@@ -87,9 +87,12 @@ def news_for_today():
 		pagehtml = html.fromstring(response.text)
 		news = pagehtml.xpath('//h2[@class="esc-lead-article-title"] \
 		                      /a/span[@class="titletext"]/text()')
+		k=0
 		for i in news:
 			os.system('./speech.sh ' + i)
-
+			k+=1
+			if k==3:
+				break
 
 
 def current_time():
@@ -100,7 +103,7 @@ def current_time():
 	os.system('./speech.sh ' + d)
 
 def joke():
-	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call", "Yo mama so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
+	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call button", "Yo mama is so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
 	i=random.randrange(0,len(L))
 	os.system('./speech.sh ' + L[i])
 
@@ -170,7 +173,7 @@ def trackObject(imgname, matchthresh):
 	camera.release()
 
 def voiceInput(inputString):	
-	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5}
+	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
@@ -196,6 +199,9 @@ def voiceInput(inputString):
 		objectToFind = "mouse"
 		objectThreshold = listObj[objectToFind]
 
+	elif "yoga" in inputString or "yoghurt" in inputString or "yogurt" in inputString or "yogart" in inputString:
+		objectToFind = "yoghurt"
+		objectThreshold = listObj[objectToFind]
 	else:
 		for i in listObj:
 			if i in inputString:
@@ -212,7 +218,7 @@ def voiceInput(inputString):
 		flag3=0
 		mount=[]
 		while True: 
-			count=0
+			#count=0
 			for i in img_files:
 				print "[+] Trying image " + i
 				ret, b = trackObject(i,objectThreshold)
