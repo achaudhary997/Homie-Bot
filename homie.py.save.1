@@ -170,38 +170,24 @@ def trackObject(imgname, matchthresh):
 	camera.release()
 
 def voiceInput(inputString):	
-	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5}
+	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
 		objectToFind = "bottle"
-		objectThreshold = listObj[objectToFind]
-	elif "buk" in inputString:
+	elif "buk" in inputString or "book" in inputString:
 		objectToFind = "book"
-		objectThreshold = listObj[objectToFind]
-
 	elif "cute" in inputString:
 		objectToFind = "cube"
-		objectThreshold = listObj[objectToFind]
-
 	elif "mum" in inputString or "cup" in inputString or "class" in inputString:
-		objectToFind = "mug"
-		objectThreshold = listObj[objectToFind]
- 
+		objectToFind = "mug" 
 	elif "deodorant" in inputString:
 		objectToFind = "perfume"
-		objectThreshold = listObj[objectToFind]
-
 	elif "house" in inputString or "maus" in inputString:
 		objectToFind = "mouse"
-		objectThreshold = listObj[objectToFind]
-
-	else:
-		for i in listObj:
-			if i in inputString:
-				objectToFind = i
-				objectThreshold = listObj[i]
-				break
+	if objectToFind in listObj:
+		objectThreshold = listObj
+		break
 	if objectToFind != "":
 		img_files=glob.glob('./database/'+objectToFind+'/*')
 		flag = 0
@@ -234,7 +220,7 @@ def voiceInput(inputString):
 					break
 				else:
 					for matches in b:
-						if matches >= 2:
+						if matches >= 3:
 							count += 1
 					print 'count is '+str(count)
 					if flag2==0:

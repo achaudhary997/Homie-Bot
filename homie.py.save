@@ -9,13 +9,13 @@ import glob
 import random
 import RPi.GPIO as GPIO
 
-
+<<<<<<< HEAD
 def cleanup():
 	GPIO.cleanup()
 
 def dont_move():
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(7,GPIO.OUT)
+	        GPIO.setup(7,GPIO.OUT)
         GPIO.setup(11,GPIO.OUT)
         GPIO.setup(13,GPIO.OUT)
         GPIO.setup(15,GPIO.OUT)
@@ -26,16 +26,15 @@ def dont_move():
 
 # how much to rotate
 dont_move()
-rotate_time = 0.45
+rotate_time = 0.5
 min_move_front_distance = 10
 move_forward_time = 0.33
-
-
+=======
 # times for various movements
-#rotate_time = 0.1
+rotate_time = 0.1
 move_backward_time = 0.5
-#move_forward_time = 0.5
-
+move_forward_time = 0.5
+>>>>>>> d4409cc056b656e37a928ea9fa24b7d2d7b94d17
 
 #settings
 mic_name = "USB Device 0x46d:0x825: Audio (hw:1,0)"
@@ -170,32 +169,21 @@ def trackObject(imgname, matchthresh):
 	camera.release()
 
 def voiceInput(inputString):	
-	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5}
+	listObj = {'bottle':9, 'book':11, 'cube':8, 'mug':5, 'perfume':6, 'mouse':6}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
 		objectToFind = "bottle"
-		objectThreshold = listObj[objectToFind]
 	elif "buk" in inputString:
 		objectToFind = "book"
-		objectThreshold = listObj[objectToFind]
-
 	elif "cute" in inputString:
 		objectToFind = "cube"
-		objectThreshold = listObj[objectToFind]
-
 	elif "mum" in inputString or "cup" in inputString or "class" in inputString:
-		objectToFind = "mug"
-		objectThreshold = listObj[objectToFind]
- 
+		objectToFind = "mug" 
 	elif "deodorant" in inputString:
 		objectToFind = "perfume"
-		objectThreshold = listObj[objectToFind]
-
 	elif "house" in inputString or "maus" in inputString:
 		objectToFind = "mouse"
-		objectThreshold = listObj[objectToFind]
-
 	else:
 		for i in listObj:
 			if i in inputString:
@@ -206,19 +194,13 @@ def voiceInput(inputString):
 		img_files=glob.glob('./database/'+objectToFind+'/*')
 		flag = 0
 		count = 0
-		x=5
-		k=0
-		flag2=0
-		flag3=0
-		mount=[]
 		while True: 
-			count=0
 			for i in img_files:
 				print "[+] Trying image " + i
 				ret, b = trackObject(i,objectThreshold)
 				if ret == True:
 					print "Found " + objectToFind
-					#move_down()
+					move_down()
 					time.sleep(move_backward_time)
 					dont_move()
 					try:
@@ -237,33 +219,18 @@ def voiceInput(inputString):
 						if matches >= 2:
 							count += 1
 					print 'count is '+str(count)
-					if flag2==0:
-						mount.append(count)
-						k+=1
-					if k==x:
-						flag2=1
-					if flag2==1 and flag3==0:
-						move_left()
-						time.sleep(2*rotate_time)
-						dont_move()
-						flag3=1
-					
-					if count < 14 and flag2==1:
+					if count < 14:
 						move_left()
 						print 'moving left'
 						time.sleep(rotate_time)
 						dont_move()
 							#voiceInput(objectToFind)
-					elif count > 14 and findDistance > 14 and flag2==1:
+					elif count > 14 and findDistance > 14:
 						move_up()
 						print 'moving forward'
 						time.sleep(move_forward_time)
 						dont_move()
 						#voiceInput(objectToFind)
-					elif flag2==0:
-						move_left()
-						time.sleep(rotate_time)
-						dont_move()
 					try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:

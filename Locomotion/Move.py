@@ -2,6 +2,7 @@ import time
 import curses
 import RPi.GPIO as GPIO
 
+
 def findDistance():
 	
 	GPIO.setmode(GPIO.BOARD)
