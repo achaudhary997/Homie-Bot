@@ -250,6 +250,7 @@ def voiceInput(inputString):
 						flag2=1
 					if flag2==1 and flag3==0:
 						move_left()
+						print 'moving left'
 						time.sleep(2*rotate_time)
 						dont_move()
 						flag3=1
@@ -268,6 +269,7 @@ def voiceInput(inputString):
 						#voiceInput(objectToFind)
 					elif flag2==0:
 						move_left()
+						print 'moving left'
 						time.sleep(rotate_time)
 						dont_move()
 					try:
