@@ -212,11 +212,15 @@ def voiceInput(inputString):
 		img_files=glob.glob('./database/'+objectToFind+'/*')
 		flag = 0
 		count = 0
-		x=5
+		x=6
 		k=0
 		flag2=0
 		flag3=0
+		left_flag=0
+		middle_flag=0
+		right_flag=0
 		mount=[]
+		rightmidcount=0
 		while True: 
 			#count=0
 			for i in img_files:
@@ -250,16 +254,30 @@ def voiceInput(inputString):
 						flag2=1
 					if flag2==1 and flag3==0:
 						move_left()
-						print 'moving left'
-						time.sleep(2*rotate_time)
+						print 'moving left to position with max count'
+						print 'direction is:  ' + str(mount.index(max(mount)))
+						time.sleep(mount.index(max(mount))*rotate_time)
 						dont_move()
 						flag3=1
 					
-					if count < 14 and flag2==1:
+					if count < 14 and flag2==1 and left_flag==0: #after we come to the position directed towards object, move left, then middle then right
 						move_left()
 						print 'moving left'
-						time.sleep(rotate_time)
+						time.sleep(rotate_time/3)
 						dont_move()
+						left_flag=1
+
+					if count < 14 and flag2==1 and (right_flag==0 or middle_flag==0): #after we come to the position directed towards object, move left, then middle then right
+						move_right()
+						print 'right'
+						time.sleep(rotate_time/3)
+						dont_move()
+						if rightmidcount==0:
+							middle_flag=1
+							rightmidcount+=1
+						if rightmidcount==1:
+							right_flag=1
+						
 							#voiceInput(objectToFind)
 					elif count > 14 and findDistance > 14 and flag2==1:
 						move_up()
@@ -269,7 +287,7 @@ def voiceInput(inputString):
 						#voiceInput(objectToFind)
 					elif flag2==0:
 						move_left()
-						print 'moving left'
+						print 'moving left to search for max count'
 						time.sleep(rotate_time)
 						dont_move()
 					try:
