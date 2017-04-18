@@ -26,7 +26,10 @@ def dont_move():
 
 # how much to rotate
 dont_move()
-rotate_time = 0.45
+rotate_time = 0.24
+#rotate_time_3 = 0.650
+#rotate_time_2 = 0.465
+#rotate_time = 
 min_move_front_distance = 10
 move_forward_time = 0.33
 
@@ -212,7 +215,7 @@ def voiceInput(inputString):
 		img_files=glob.glob('./database/'+objectToFind+'/*')
 		flag = 0
 		count = 0
-		x=6
+		x=7
 		k=0
 		flag2=0
 		flag3=0
@@ -221,11 +224,14 @@ def voiceInput(inputString):
 		right_flag=0
 		mount=[]
 		rightmidcount=0
+		flag69=0
 		while True: 
-			#count=0
+			count=0
 			for i in img_files:
 				print "[+] Trying image " + i
 				ret, b = trackObject(i,objectThreshold)
+				if left_flag==2:
+					flag69=1
 				if ret == True:
 					print "Found " + objectToFind
 					#move_down()
@@ -253,30 +259,28 @@ def voiceInput(inputString):
 					if k==x:
 						flag2=1
 					if flag2==1 and flag3==0:
-						move_left()
+						
 						print 'moving left to position with max count'
 						print 'direction is:  ' + str(mount.index(max(mount)))
-						time.sleep(mount.index(max(mount))*rotate_time)
-						dont_move()
+						for i in range(mount.index(max(mount))):
+							move_left()	
+							time.sleep(rotate_time)
+							dont_move()
+							time.sleep(0.2)
 						flag3=1
 					
 					if count < 14 and flag2==1 and left_flag==0: #after we come to the position directed towards object, move left, then middle then right
 						move_left()
 						print 'moving left'
-						time.sleep(rotate_time/3)
+						time.sleep(rotate_time/2)
 						dont_move()
-						left_flag=1
+						left_flag=2
 
-					if count < 14 and flag2==1 and (right_flag==0 or middle_flag==0): #after we come to the position directed towards object, move left, then middle then right
+					if count < 14 and flag69==1 and flag2==1: #after we come to the position directed towards object, move left, then middle then right
 						move_right()
 						print 'right'
-						time.sleep(rotate_time/3)
+						time.sleep(rotate_time/2)
 						dont_move()
-						if rightmidcount==0:
-							middle_flag=1
-							rightmidcount+=1
-						if rightmidcount==1:
-							right_flag=1
 						
 							#voiceInput(objectToFind)
 					elif count > 14 and findDistance > 14 and flag2==1:
@@ -428,5 +432,10 @@ if __name__ == "__main__":
 	ans = input_speech()
 	print ans
 	determine(ans.lower())
-
-
+	
+	#for i in range(3):
+	#	move_right()
+	#	time.sleep(rotate_time/2)
+	#	dont_move()
+	#	time.sleep(0.5)
+	
