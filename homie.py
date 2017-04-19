@@ -26,7 +26,7 @@ def dont_move():
 
 # how much to rotate
 dont_move()
-rotate_time = 0.24
+rotate_time = 0.25
 #rotate_time_3 = 0.650
 #rotate_time_2 = 0.465
 #rotate_time = 
