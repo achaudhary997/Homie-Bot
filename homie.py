@@ -427,11 +427,18 @@ def dont_move():
 	GPIO.output(15,False)
 
 if __name__ == "__main__":
-	os.system("./speech.sh " + "Hey there! Whats up? ")
-	print "hello"
-	ans = input_speech()
-	print ans
-	determine(ans.lower())
+	while True:
+		os.system("./speech.sh " + "What can I do for you? ")
+		print "hello"
+		ans = input_speech()
+		L=['No','no','nope','Nope','Nothing','nothing']
+		for i in L:
+			if i in ans:
+				os.system("./speech.sh " + "Okay! I'll go to sleep then!")
+				exit(0)
+		print ans
+		determine(ans.lower())
+
 	
 	#for i in range(3):
 	#	move_right()
