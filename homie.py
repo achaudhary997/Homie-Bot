@@ -8,10 +8,6 @@ from datetime import datetime
 import glob
 import random
 import RPi.GPIO as GPIO
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-from email.mime.multipart import MIMEMultipart
 
 
 def cleanup():
@@ -179,28 +175,6 @@ def trackObject(imgname, matchthresh):
 	cv2.destroyAllWindows()
 	camera.release()
 
-def SendMail(ImgFileName,objectName):
-    img_data = open('screenshots/'+ImgFileName, 'rb').read()
-    msg = MIMEMultipart()
-    msg['Subject'] = "Here's the location of your object!"
-    msg['From'] = 'scrypting101@gmail.com'
-    msg['To'] = 'yashitmaheshwary@gmail.com'
-
-    text = MIMEText("View the image to know where your "+objectName + " is")
-    msg.attach(text)
-    image = MIMEImage(img_data, name=os.path.basename(ImgFileName))
-    msg.attach(image)
-
-    s = smtplib.SMTP('smtp.gmail.com', 587)
-    s.ehlo()
-    s.starttls()
-    s.ehlo()
-    s.login('scrypting101@gmail.com', 'xxxxx')
-    s.sendmail(msg['From'], msg['To'], msg.as_string())
-    s.quit()
-    os.system('./speech.sh ' + "The location of your "+objectName+" has been mailed to you.") 
-
-
 def voiceInput(inputString):	
 	listObj = {'bottle':9, 'book':10, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7}
 	flag = 0
@@ -271,10 +245,6 @@ def voiceInput(inputString):
 						print "[-] Error"
 					flag = 1
 					cleanup()
-					os.system("mkdir screenshots")
-					os.system("fswebcam /screenshots/" + objectToFind + ".jpg")
-					SendMail(objectToFind+".jpg",objectToFind)
-					os.system("rm -rf screenshots")
 					if flag == 1:
 						exit(0)
 					break
@@ -360,7 +330,7 @@ def determine(ans):
 	elif option4 in ans or option5 in ans:
 		voiceInput(ans)
 	elif option6 in ans:
-		jokes()
+		joke()
 	elif option6 in ans:
 		move()
 
@@ -467,7 +437,10 @@ if __name__ == "__main__":
 				os.system("./speech.sh " + "Okay! I'll go to sleep then!")
 				exit(0)
 		print ans
-		determine(ans.lower())
+		try:
+			determine(ans.lower())
+		except:
+			os.system("./speech.sh " + "I'm sorry, I didn't quite get that!")
 
 	
 	#for i in range(3):
