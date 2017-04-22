@@ -110,6 +110,28 @@ def joke():
 	i=random.randrange(0,len(L))
 	os.system('./speech.sh ' + L[i])
 
+def SendMail(ImgFileName,objectName):
+	img_data = open('screenshots/'+ImgFileName, 'rb').read()
+	msg = MIMEMultipart()
+	msg['Subject'] = "Here's the location of your object!"
+	msg['From'] = 'scrypting101@gmail.com'
+	msg['To'] = 'yashitmaheshwary@gmail.com'
+
+	text = MIMEText("View the image to know where your "+objectName + " is")
+	msg.attach(text)
+	image = MIMEImage(img_data, name=os.path.basename(ImgFileName))
+	msg.attach(image)
+
+	s = smtplib.SMTP('smtp.gmail.com', 587)
+	s.ehlo()
+	s.starttls()
+	s.ehlo()
+	s.login('scrypting101@gmail.com', 'xxxxx')
+	s.sendmail(msg['From'], msg['To'], msg.as_string())
+	s.quit()
+	os.system('./speech.sh ' + "The location of your "+objectName+" has been mailed to you.") 
+
+
 def trackObject(imgname, matchthresh):
 	import numpy as np
 	import cv2
@@ -245,6 +267,10 @@ def voiceInput(inputString):
 						print "[-] Error"
 					flag = 1
 					cleanup()
+					os.system("mkdir screenshots")
+					os.system("fswebcam /screenshots/" + objectToFind + ".jpg")
+					SendMail(objectToFind+".jpg",objectToFind)
+					os.system("rm -rf screenshots")
 					if flag == 1:
 						exit(0)
 					break
