@@ -8,11 +8,6 @@ from datetime import datetime
 import glob
 import random
 import RPi.GPIO as GPIO
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-from email.mime.multipart import MIMEMultipart
-
 
 
 def cleanup():
@@ -31,7 +26,7 @@ def dont_move():
 
 # how much to rotate
 dont_move()
-rotate_time = 0.18
+rotate_time = 0.25
 #rotate_time_3 = 0.650
 #rotate_time_2 = 0.465
 #rotate_time = 
@@ -97,7 +92,6 @@ def news_for_today():
 		                      /a/span[@class="titletext"]/text()')
 		k=0
 		for i in news:
-			print i
 			os.system('./speech.sh ' + i)
 			k+=1
 			if k==3:
@@ -115,29 +109,6 @@ def joke():
 	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call button", "Yo mama is so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
 	i=random.randrange(0,len(L))
 	os.system('./speech.sh ' + L[i])
-
-def SendMail(ImgFileName,objectName):
-	print "entered mail  funcciton"
-        img_data = open('./screenshots/'+ImgFileName, 'rb').read()
-	msg = MIMEMultipart()
-	msg['Subject'] = "Here is the location of your object!"
-	msg['From'] = 'scrypting101@gmail.com'
-	msg['To'] = 'yashitmaheshwary@gmail.com'
-
-	text = MIMEText("View the image to know where your "+objectName + " is")
-	msg.attach(text)
-	image = MIMEImage(img_data, name=os.path.basename(ImgFileName))
-	msg.attach(image)
-
-	s = smtplib.SMTP('smtp.gmail.com', 587)
-	s.ehlo()
-	s.starttls()
-	s.ehlo()
-	s.login('scrypting101@gmail.com', 'dkismean*')
-	s.sendmail(msg['From'], msg['To'], msg.as_string())
-	s.quit()
-	os.system('./speech.sh ' + "The location of your "+objectName+" has been mailed to you modafucka.") 
-
 
 def trackObject(imgname, matchthresh):
 	import numpy as np
@@ -244,7 +215,7 @@ def voiceInput(inputString):
 		img_files=glob.glob('./database/'+objectToFind+'/*')
 		flag = 0
 		count = 0
-		x=10
+		x=7
 		k=0
 		flag2=0
 		flag3=0
@@ -274,17 +245,15 @@ def voiceInput(inputString):
 						print "[-] Error"
 					flag = 1
 					cleanup()
-					os.system("mkdir screenshots")
-					os.system("fswebcam ./screenshots/" + objectToFind + ".jpg")
-					SendMail(objectToFind+".jpg",objectToFind)
-					os.system("rm -rf ./screenshots")
+					if flag == 1:
+						exit(0)
 					break
 				else:
 					for matches in b:
 						if matches >= 2:
 							count += 1
 					print 'count is '+str(count)
-					if flag2==0:
+https://www.youtube.com/watch?v=54xR7f2gx3Q					if flag2==0:
 						mount.append(count)
 						k+=1
 					if k==x:
@@ -299,6 +268,13 @@ def voiceInput(inputString):
 							dont_move()
 							time.sleep(0.2)
 						flag3=1
+					
+					if count < 14 and flag2==1 and left_flag==0: #after we come to the position directed towards object, move left, then middle then right
+						move_left()
+						print 'moving left'
+						time.sleep(rotate_time/2)
+						dont_move()
+						left_flag=2
 
 					if count < 14 and flag69==1 and flag2==1: #after we come to the position directed towards object, move left, then middle then right
 						move_right()
@@ -314,25 +290,17 @@ def voiceInput(inputString):
 						dont_move()
 						#voiceInput(objectToFind)
 					elif flag2==0:
-					        if count < 10:    
-                                                    os.system("./speech.sh " + "Not there!")
-                                          	else:
-                                                    os.system("./speech.sh " + "Maybe it's in that direction")
-                                                move_left()
+						move_left()
 						print 'moving left to search for max count'
-			
-                                                
-                                                time.sleep(rotate_time)
+						time.sleep(rotate_time)
 						dont_move()
-					"""
-                                        try:
+					try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:
 						print("[-] Error")
 					except sr.RequestError as e:
 						print "[-] Error"	
-                                        """			
-                        if(flag == 1):
+			if(flag == 1):
 				cleanup()
 				break
 	else:
@@ -365,9 +333,6 @@ def determine(ans):
 		joke()
 	elif option6 in ans:
 		move()
-	else:
-                os.system("./speech.sh " + "I'm sorry, I did not quite get that!")
-
 
 def findDistance():
 	import time
@@ -469,11 +434,13 @@ if __name__ == "__main__":
 		L=['No','no','nope','Nope','Nothing','nothing']
 		for i in L:
 			if i in ans:
-				os.system("./speech.sh " + "Okay I will go to sleep then")
-				exit()
+				os.system("./speech.sh " + "Okay! I'll go to sleep then!")
+				exit(0)
 		print ans
-		determine(ans.lower())
-			#os.system(".hat!")
+		try:
+			determine(ans.lower())
+		except:
+			os.system("./speech.sh " + "I'm sorry, I didn't quite get that!")
 
 	
 	#for i in range(3):
