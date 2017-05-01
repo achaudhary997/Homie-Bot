@@ -19,15 +19,15 @@ def cleanup():
 	GPIO.cleanup()
 
 def dont_move():
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(7,GPIO.OUT)
-        GPIO.setup(11,GPIO.OUT)
-        GPIO.setup(13,GPIO.OUT)
-        GPIO.setup(15,GPIO.OUT)
-        GPIO.output(7,False)
-        GPIO.output(11,False)
-        GPIO.output(13,False)
-        GPIO.output(15,False)
+		GPIO.setmode(GPIO.BOARD)
+		GPIO.setup(7,GPIO.OUT)
+		GPIO.setup(11,GPIO.OUT)
+		GPIO.setup(13,GPIO.OUT)
+		GPIO.setup(15,GPIO.OUT)
+		GPIO.output(7,False)
+		GPIO.output(11,False)
+		GPIO.output(13,False)
+		GPIO.output(15,False)
 
 # how much to rotate
 dont_move()
@@ -69,11 +69,11 @@ def input_speech(c):
 			if c==0:
 				os.system('./speech.sh ' + "What can I do for you?")
 			if c==1:
-       				os.system('./speech.sh ' + "What would be the subject of your email?")
+					os.system('./speech.sh ' + "What would be the subject of your email?")
 			if c==2:
 				os.system('./speech.sh ' + "Who would you like to send the email to? Please spell out the email address")
 			if c==3:
-	 			os.system('./speech.sh ' + "What would you like the content of your mail to have?")
+				os.system('./speech.sh ' + "What would you like the content of your mail to have?")
 			if c==4:
 				os.system('./speech.sh ' + "could you please repeat that?")
 			audio=r.listen(source)
@@ -90,7 +90,7 @@ def input_speech(c):
 
 def weather():
 	owm = pyowm.OWM('8e47cb932d1448c4049c3506aca77f87')
-        os.system('./speech.sh ' + "What would be the subject of your email?")
+		os.system('./speech.sh ' + "What would be the subject of your email?")
 	os.system("./speech.sh " + "Which place?")
 	place = input_speech()
 	observation = owm.weather_at_place(place)
@@ -105,7 +105,7 @@ def news_for_today():
 	if (response.status_code == 200):
 		pagehtml = html.fromstring(response.text)
 		news = pagehtml.xpath('//h2[@class="esc-lead-article-title"] \
-		                      /a/span[@class="titletext"]/text()')
+							  /a/span[@class="titletext"]/text()')
 		k=0
 		for i in news:
 			print i
@@ -129,7 +129,7 @@ def joke():
 
 def SendMail(ImgFileName,objectName):
 	print "entered mail  funcciton"
-        img_data = open('./screenshots/'+ImgFileName, 'rb').read()
+		img_data = open('./screenshots/'+ImgFileName, 'rb').read()
 	msg = MIMEMultipart()
 	msg['Subject'] = "Here is the location of your object!"
 	msg['From'] = 'scrypting101@gmail.com'
@@ -252,7 +252,7 @@ def trackObject(imgname, matchthresh):
 	camera.release()
 
 def voiceInput(inputString):	
-	listObj = {'bottle':9, 'book':10, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7}
+	listObj = {'bottle':9, 'book':10, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7,'tang':6}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
@@ -280,6 +280,9 @@ def voiceInput(inputString):
 
 	elif "yoga" in inputString or "yoghurt" in inputString or "yogurt" in inputString or "yogart" in inputString:
 		objectToFind = "yoghurt"
+		objectThreshold = listObj[objectToFind]
+	elif "tank" in inputString:
+		objectToFind = "tang"
 		objectThreshold = listObj[objectToFind]
 	else:
 		for i in listObj:
@@ -364,25 +367,25 @@ def voiceInput(inputString):
 						dont_move()
 						#voiceInput(objectToFind)
 					elif flag2==0:
-					        if count < 10:    
-                               				 os.system("./speech.sh " + "Not there!")
-                            			else:
-                               				 os.system("./speech.sh " + "Maybe it is in that direction")
-                       				move_left()
+							if count < 10:    
+											 os.system("./speech.sh " + "Not there!")
+										else:
+											 os.system("./speech.sh " + "Maybe it is in that direction")
+									move_left()
 						print 'moving left to search for max count'
 			
-                                                
-                        			time.sleep(rotate_time)
+												
+									time.sleep(rotate_time)
 						dont_move()
 					"""
-                                        try:
+										try:
 						os.system('./speech.sh ' + "lol hogaya") 
 					except sr.UnknownValueError:
 						print("[-] Error")
 					except sr.RequestError as e:
 						print "[-] Error"	
-                                        """			
-                        if(flag == 1):
+										"""			
+						if(flag == 1):
 				cleanup()
 				break
 	else:
