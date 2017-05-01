@@ -280,7 +280,7 @@ def voiceInput(inputString):
 	elif "yoga" in inputString or "yoghurt" in inputString or "yogurt" in inputString or "yogart" in inputString:
 		objectToFind = "yoghurt"
 		objectThreshold = listObj[objectToFind]
-	elif "tank" in  inputString or "tang" in inputString:
+	elif "tank" in  inputString or "tang" in inputString or "dad" in inputString or "dance" in inputString:
 		objectToFind = "tang"
 		objectThreshold = listObj[objectToFind]
 	else:
@@ -326,6 +326,7 @@ def voiceInput(inputString):
 						print "[-] Error"
 					flag = 1
 					cleanup()
+					time.sleep(1)
 					os.system("mkdir screenshots")
 					os.system("fswebcam ./screenshots/" + objectToFind + ".jpg")
 					SendMail(objectToFind+".jpg",objectToFind)
@@ -412,10 +413,10 @@ def determine(ans):
 		news_for_today()
 	elif option2 in ans:
 		weather()
+	elif option4 in or option5 in ans:
+		voiceInput(ans)
 	elif option3 in ans:
 		current_time()
-	elif option4 in ans or option5 in ans:
-		voiceInput(ans)
 	elif option6 in ans:
 		joke()
 	elif option6 in ans:
