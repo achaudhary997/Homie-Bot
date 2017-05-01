@@ -203,7 +203,7 @@ def trackObject(imgname, matchthresh):
 
 	firsttime=True
 	counter = 0
-	while (camera.isOpened()):
+	while True:
 		ret, imgCamColor = camera.read()
 		if ret:
 			imgCamGray = cv2.cvtColor(imgCamColor, cv2.COLOR_BGR2GRAY)
@@ -305,7 +305,10 @@ def voiceInput(inputString):
 			count=0
 			for i in img_files:
 				print "[+] Trying image " + i
-				ret, b = trackObject(i,objectThreshold)
+				try:
+					ret, b = trackObject(i,objectThreshold)
+				except TypeError:
+					continue
 				if left_flag==2:
 					flag69=1
 				if ret == True:
