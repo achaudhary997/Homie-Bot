@@ -60,13 +60,20 @@ for i,microphone_name in enumerate(mic_list):
 		print microphone_name
 		print device_id
 
-def input_speech():
+def input_speech(c):
 	while True:
 		print "trying to listen"
 		with sr.Microphone(device_index=device_id, sample_rate = sample_rate, chunk_size=chunk_size) as source:
 			r.adjust_for_ambient_noise(source)
 			print "okay say something"
-			os.system('./speech.sh ' + "I am ready to listen")
+			if c==0:
+				os.system('./speech.sh ' + "What can I do for you?")
+			if c==1:
+       				os.system('./speech.sh ' + "What would be the subject of your email?")
+			if c==2:
+				os.system('./speech.sh ' + "Who would you like to send the email to? Please spell out the email address")
+			if c==3:
+	 			os.system('./speech.sh ' + "What would you like the content of your mail to have?")
 			audio=r.listen(source)
 			# print "sup"
 		try:
@@ -81,6 +88,7 @@ def input_speech():
 
 def weather():
 	owm = pyowm.OWM('8e47cb932d1448c4049c3506aca77f87')
+        os.system('./speech.sh ' + "What would be the subject of your email?")
 	os.system("./speech.sh " + "Which place?")
 	place = input_speech()
 	observation = owm.weather_at_place(place)
@@ -113,7 +121,7 @@ def current_time():
 	os.system('./speech.sh ' + d)
 
 def joke():
-	L=["I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!", 'A neutron walks into a bar and asks, "How much for a beer?" The bartender replies "For you? No charge!"', "It is so cold outside I saw a politician with his hands in his own pockets", "After many years of studying at a university, I’ve finally become a PhD… or Pizza Hut Deliveryman as people call it."]
+	L=["I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize", "A neutron walks into a bar and asks, 'How much for a beer?' The bartender replies 'For you? No charge'", "It is so cold outside I saw a politician with his hands in his own pockets", "After many years of studying at a university, I have finally become a PhD or Pizza Hut Delivery man as people call it."]
 	i=random.randrange(0,len(L))
 	os.system('./speech.sh ' + L[i])
 
@@ -141,27 +149,33 @@ def SendMail(ImgFileName,objectName):
 
 def mailer():
 	msg = MIMEMultipart()
-	os.system('./speech.sh ' + "What would be the subject of your email?") 
-	sub = input_speech()
-	os.system('./speech.sh ' + "Who would you like to send the email to? Please spell out the email address")
-	add = input_speech()
+	#os.system('./speech.sh ' + "What would be the subject of your email?") 
+	sub = input_speech(1)
+	#os.system('./speech.sh ' + "Who would you like to send the email to? Please spell out the email address")
+	add = input_speech(2)
 	add = add.replace(" ","")
 	dot = "dot"
+	at = "at"
 	if dot in add:
 		add=add.replace(dot,".")
-	os.system('./speech.sh ' + "What would you like the content of your mail to have?")
-	t = input_speech()
+	if at in add:
+		add = add.replace(at, "@")
+	add=add.lower()
+	print add
+	#os.system('./speech.sh ' + "What would you like the content of your mail to have?")
+	t = input_speech(3)
 	msg['Subject'] = sub
 	msg['From'] = "scrypting101@gmail.com"
 	msg['To'] = add
 	text = MIMEText(t)
-	msg.attach(text)
+	print text
+	#msg.attach(text)
 	s = smtplib.SMTP('smtp.gmail.com', 587)
-	s.ehlo()
-	s.starttls()
-	s.ehlo()
-	s.login('scrypting101@gmail.com', 'dkismean*')
-	s.sendmail(msg['From'], msg['To'], msg.as_string())
+	#s.ehlo()
+	#s.starttls()
+	#s.ehlo()
+	#s.login('scrypting101@gmail.com', 'dkismean*')
+	#s.sendmail(msg['From'], msg['To'], msg.as_string())
 	os.system("./speech.sh " + "The email has been sent")
 	s.quit()
 
@@ -341,14 +355,14 @@ def voiceInput(inputString):
 						#voiceInput(objectToFind)
 					elif flag2==0:
 					        if count < 10:    
-                                os.system("./speech.sh " + "Not there!")
-                            else:
-                                os.system("./speech.sh " + "Maybe it's in that direction")
-                        move_left()
+                               				 os.system("./speech.sh " + "Not there!")
+                            			else:
+                               				 os.system("./speech.sh " + "Maybe it's in that direction")
+                       				move_left()
 						print 'moving left to search for max count'
 			
                                                 
-                        time.sleep(rotate_time)
+                        			time.sleep(rotate_time)
 						dont_move()
 					"""
                                         try:
@@ -494,9 +508,9 @@ def dont_move():
 
 if __name__ == "__main__":
 	while True:
-		os.system("./speech.sh " + "What can I do for you? ")
-		print "hello"
-		ans = input_speech()
+		#os.system("./speech.sh " + "What can I do for you? ")
+		#print "hello"
+		ans = input_speech(0)
 		L=['No','no','nope','Nope','Nothing','nothing']
 		for i in L:
 			if i in ans:
