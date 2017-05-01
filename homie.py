@@ -66,6 +66,7 @@ def input_speech():
 		with sr.Microphone(device_index=device_id, sample_rate = sample_rate, chunk_size=chunk_size) as source:
 			r.adjust_for_ambient_noise(source)
 			print "okay say something"
+			os.system('./speech.sh ' + "I am ready to listen")
 			audio=r.listen(source)
 			# print "sup"
 		try:
@@ -112,7 +113,7 @@ def current_time():
 	os.system('./speech.sh ' + d)
 
 def joke():
-	L=["Yo momma is so fat, I took a picture of her last Christmas and it's still printing." , "Yo momma is so fat when she sat on WalMart, she lowered the prices", "Yo momma is so stupid when an intruder broke into her house, she ran downstairs, dialed 9-1-1 on the microwave, and couldn't find the call button", "Yo mama is so bald that she took a shower and got brain-washed", "Yo mama is so fat that she looked up cheat codes for Wii Fit", "Yo mama so old that when she was in school there was no history class", "Yo momma so fat she Fell in love and broke it." , "Yo mama so fat she's got more Chins than a Hong Kong phone book!", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!"]
+	L=["I can't believe I got fired from the calendar factory. All I did was take a day off.", "Why did the scientist install a knocker on his door? He wanted to win the No-bell prize!", 'A neutron walks into a bar and asks, "How much for a beer?" The bartender replies "For you? No charge!"', "It is so cold outside I saw a politician with his hands in his own pockets", "After many years of studying at a university, I’ve finally become a PhD… or Pizza Hut Deliveryman as people call it."]
 	i=random.randrange(0,len(L))
 	os.system('./speech.sh ' + L[i])
 
@@ -136,8 +137,33 @@ def SendMail(ImgFileName,objectName):
 	s.login('scrypting101@gmail.com', 'dkismean*')
 	s.sendmail(msg['From'], msg['To'], msg.as_string())
 	s.quit()
-	os.system('./speech.sh ' + "The location of your "+objectName+" has been mailed to you modafucka.") 
+	os.system('./speech.sh ' + "The location of your "+objectName+" has been mailed to you.") 
 
+def mailer():
+	msg = MIMEMultipart()
+	os.system('./speech.sh ' + "What would be the subject of your email?") 
+	sub = input_speech()
+	os.system('./speech.sh ' + "Who would you like to send the email to? Please spell out the email address")
+	add = input_speech()
+	add = add.replace(" ","")
+	dot = "dot"
+	if dot in add:
+		add=add.replace(dot,".")
+	os.system('./speech.sh ' + "What would you like the content of your mail to have?")
+	t = input_speech()
+	msg['Subject'] = sub
+	msg['From'] = "scrypting101@gmail.com"
+	msg['To'] = add
+	text = MIMEText(t)
+	msg.attach(text)
+	s = smtplib.SMTP('smtp.gmail.com', 587)
+	s.ehlo()
+	s.starttls()
+	s.ehlo()
+	s.login('scrypting101@gmail.com', 'dkismean*')
+	s.sendmail(msg['From'], msg['To'], msg.as_string())
+	os.system("./speech.sh " + "The email has been sent")
+	s.quit()
 
 def trackObject(imgname, matchthresh):
 	import numpy as np
@@ -315,14 +341,14 @@ def voiceInput(inputString):
 						#voiceInput(objectToFind)
 					elif flag2==0:
 					        if count < 10:    
-                                                    os.system("./speech.sh " + "Not there!")
-                                          	else:
-                                                    os.system("./speech.sh " + "Maybe it's in that direction")
-                                                move_left()
+                                os.system("./speech.sh " + "Not there!")
+                            else:
+                                os.system("./speech.sh " + "Maybe it's in that direction")
+                        move_left()
 						print 'moving left to search for max count'
 			
                                                 
-                                                time.sleep(rotate_time)
+                        time.sleep(rotate_time)
 						dont_move()
 					"""
                                         try:
@@ -352,6 +378,9 @@ def determine(ans):
 	option5="where"
 	option6="joke"
 	option7="move"
+	option8="email"
+	option9="mail"
+	option10="male"
 	
 	if option1 in ans:
 		news_for_today()
@@ -365,6 +394,8 @@ def determine(ans):
 		joke()
 	elif option6 in ans:
 		move()
+	elif option8 in ans or option9 in ans or option10 in ans:
+		mailer()
 	else:
                 os.system("./speech.sh " + "I'm sorry, I did not quite get that!")
 
