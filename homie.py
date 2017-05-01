@@ -251,7 +251,7 @@ def trackObject(imgname, matchthresh):
 	camera.release()
 
 def voiceInput(inputString):	
-	listObj = {'bottle':9, 'book':10, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7,'tang':6}
+	listObj = {'bottle':9, 'book':10, 'cube':8, 'mug':5, 'perfume':6, 'mouse':5, 'yoghurt':7,'tang':6, 'box':5}
 	flag = 0
 	objectToFind = ""
 	if "botal" in inputString or "portal" in inputString:
@@ -282,6 +282,10 @@ def voiceInput(inputString):
 		objectThreshold = listObj[objectToFind]
 	elif "tank" in  inputString or "tang" in inputString or "dad" in inputString or "dance" in inputString:
 		objectToFind = "tang"
+		objectThreshold = listObj[objectToFind]
+		
+	elif "box" in inputString:
+		objectToFind = "box"
 		objectThreshold = listObj[objectToFind]
 	else:
 		for i in listObj:
@@ -413,7 +417,7 @@ def determine(ans):
 		news_for_today()
 	elif option2 in ans:
 		weather()
-	elif option4 in or option5 in ans:
+	elif option4 in ans or option5 in ans:
 		voiceInput(ans)
 	elif option3 in ans:
 		current_time()
