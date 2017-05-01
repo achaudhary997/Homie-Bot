@@ -61,7 +61,7 @@ for i,microphone_name in enumerate(mic_list):
 		print device_id
 
 def input_speech(c):
-		#while True:
+	while True:
 		print "trying to listen"
 		with sr.Microphone(device_index=device_id, sample_rate = sample_rate, chunk_size=chunk_size) as source:
 			r.adjust_for_ambient_noise(source)
@@ -81,12 +81,12 @@ def input_speech(c):
 		try:
 			text=r.recognize_google(audio)
 			print text
-			
-		except sr.UnknownValueError:
-			text = input_speech(4)
-		
-		return text
-		#text = r.recognize_google(audio)
+			break
+		except:
+			input_speech(4)
+
+	#text = r.recognize_google(audio)
+	return text
 
 def weather():
 	owm = pyowm.OWM('8e47cb932d1448c4049c3506aca77f87')
@@ -195,7 +195,7 @@ def trackObject(imgname, matchthresh):
 	orb = cv2.ORB_create()
 	bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
-	imgTrainColor = cv2.imread(imgname)
+	imgTrainColor=cv2.imread(imgname)
 	imgTrainGray = cv2.cvtColor(imgTrainColor, cv2.COLOR_BGR2GRAY)
 
 	kpTrain = orb.detect(imgTrainGray,None)
@@ -203,7 +203,7 @@ def trackObject(imgname, matchthresh):
 
 	firsttime=True
 	counter = 0
-	while (camera.isOpened()):
+	while True:
 		ret, imgCamColor = camera.read()
 		imgCamGray = cv2.cvtColor(imgCamColor, cv2.COLOR_BGR2GRAY)
 		kpCam = orb.detect(imgCamGray,None)
@@ -212,7 +212,7 @@ def trackObject(imgname, matchthresh):
 		dist = [m.distance for m in matches]
 		try:
 			thres_dist = (sum(dist) / len(dist)) * 0.5
-		except ZeroDivisionError:
+		except:
 			thres_dist = (sum(dist) *0.5)
 		matches = [m for m in matches if m.distance < thres_dist]   
 
@@ -363,7 +363,7 @@ def voiceInput(inputString):
 					        if count < 10:    
                                				 os.system("./speech.sh " + "Not there!")
                             			else:
-                               				 os.system("./speech.sh " + "Maybe it is in that direction")
+                               				 os.system("./speech.sh " + "Maybe it's in that direction")
                        				move_left()
 						print 'moving left to search for max count'
 			
@@ -417,7 +417,7 @@ def determine(ans):
 	elif option8 in ans or option9 in ans or option10 in ans:
 		mailer()
 	else:
-		determine(input_speech(4))
+                
 
 
 def findDistance():
