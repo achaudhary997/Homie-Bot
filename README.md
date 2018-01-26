@@ -11,7 +11,7 @@ A Personal Assistant Bot (Built using a Raspberry Pi) that can find missing item
 * OpenCV Python
 * Python 3.x
 
-## Functioning
+## Working
 A predefined dataset of Images has to be provided to the Bot. Upon a voice command, the bot collects all the images of the object that the user wishes to find and then using Feature Matching (implemented in OpenCV Python), the bot looks around the room for the item with the highest percentage matching with the dataset provided.
 
 At an average, the bot takes around 3-4 minutes to find the desired object.
