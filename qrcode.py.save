@@ -1,3 +1,6 @@
+from qrtools import QR
+myCode = QR()
+print myCode.decode_webcam)
 import qrtools
 qr = qrtools.QR()
 qr.decode("test.jpg") #filename
